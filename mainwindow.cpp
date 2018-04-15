@@ -8,6 +8,8 @@
 
 #include "sensorview.h"
 
+#include "sensorvalueview.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow) {
@@ -15,15 +17,15 @@ MainWindow::MainWindow(QWidget *parent) :
     showMaximized();
     windowHeight = this->size().height();
     windowWidth = this->size().width();
-    mainLayout = new QHBoxLayout(parent);
+    /*mainLayout = new QHBoxLayout(this);
     scrollArea = new QScrollArea(mainLayout->widget());
 
     sensorList = new QWidget(scrollArea);
-    sensorList->setLayout(new QVBoxLayout);
-    sensorList->setGeometry(0, 0, windowWidth-200, 100);
-    settings = new QWidget();
+    sensorList->setLayout(new QVBoxLayout(this));
+    sensorList->setGeometry(0, 0, windowWidth-200, 200);
+    settings = new QWidget(this);
     settings->setGeometry(0,0,150,400);
-    settings->setLayout(new QVBoxLayout);
+    settings->setLayout(new QVBoxLayout(this));
 
     ui->centralWidget->setLayout(mainLayout);
     mainLayout->addWidget(settings);
@@ -32,7 +34,13 @@ MainWindow::MainWindow(QWidget *parent) :
     scrollArea->setWidget(sensorList);
     scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-    sensorList->layout()->addWidget(new SensorView(sensorList));
+    SensorView* sens = new SensorView(sensorList);
+    sens->setup(nullptr);
+    sensorList->layout()->addWidget(sens);*/
+
+    ui->scrollAreaWidgetContents->setLayout(new QHBoxLayout(this));
+    ui->scrollAreaWidgetContents->layout()->addWidget(new SensorValueView(ui->scrollAreaWidgetContents));
+
 }
 
 MainWindow::~MainWindow()
