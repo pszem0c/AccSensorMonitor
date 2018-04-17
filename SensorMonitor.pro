@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,15 +26,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    sensorview.cpp \
     sensormanager.cpp \
-    sensorvalueview.cpp
+    sensordevice.cpp \
+    sensordeviceview.cpp \
+    udppacketparser.cpp \
+    udpsocketlistener.cpp \
+    createdevicedialog.cpp
 
 HEADERS += \
         mainwindow.h \
-    sensorview.h \
     sensormanager.h \
-    sensorvalueview.h
+    sensordevice.h \
+    sensordeviceview.h \
+    sensorpacket.h \
+    udppacket.h \
+    udppacketparser.h \
+    udpsocketlistener.h \
+    createdevicedialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    createdevicedialog.ui

@@ -3,10 +3,9 @@
 
 #include <QMainWindow>
 
-class QHBoxLayout;
-class QVBoxLayout;
-class QScrollArea;
-class QWiget;
+class SensorManager;
+class UdpSocketListener;
+class UdpPacketParser;
 
 namespace Ui {
 class MainWindow;
@@ -20,12 +19,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_addDeviceButton_clicked();
+
 private:
     Ui::MainWindow*     ui;
-    QHBoxLayout*        mainLayout;
-    QWidget*            sensorList;
-    QWidget*            settings;
-    QScrollArea*        scrollArea;
+    SensorManager* sensorManager;
+    UdpSocketListener* udpSocketListener;
+    UdpPacketParser* udpPacketParser;
     qint64 windowHeight;
     qint64 windowWidth;
 
