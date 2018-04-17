@@ -5,10 +5,14 @@
 #include <QScrollArea>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QString>
+#include <QDebug>
 
-#include "sensorview.h"
+#include "sensormanager.h"
+#include "udpsocketlistener.h"
+#include "udppacketparser.h"
+#include "createdevicedialog.h"
 
-#include "sensorvalueview.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,33 +21,31 @@ MainWindow::MainWindow(QWidget *parent) :
     showMaximized();
     windowHeight = this->size().height();
     windowWidth = this->size().width();
-    /*mainLayout = new QHBoxLayout(this);
-    scrollArea = new QScrollArea(mainLayout->widget());
 
-    sensorList = new QWidget(scrollArea);
-    sensorList->setLayout(new QVBoxLayout(this));
-    sensorList->setGeometry(0, 0, windowWidth-200, 200);
-    settings = new QWidget(this);
-    settings->setGeometry(0,0,150,400);
-    settings->setLayout(new QVBoxLayout(this));
+    sensorManager = new SensorManager;
+    ui->scrollArea->setWidgetResizable(true);
+    ui->scrollAreaWidgetContents->setLayout(new QVBoxLayout(ui->scrollAreaWidgetContents));
+    ui->scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignTop);
+    sensorManager->setDeviceLayout((QVBoxLayout*)ui->scrollAreaWidgetContents->layout());
 
-    ui->centralWidget->setLayout(mainLayout);
-    mainLayout->addWidget(settings);
-    mainLayout->addWidget(scrollArea);
+    udpSocketListener = new UdpSocketListener;
+    udpPacketParser = new UdpPacketParser;
 
-    scrollArea->setWidget(sensorList);
-    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-
-    SensorView* sens = new SensorView(sensorList);
-    sens->setup(nullptr);
-    sensorList->layout()->addWidget(sens);*/
-
-    ui->scrollAreaWidgetContents->setLayout(new QHBoxLayout(this));
-    ui->scrollAreaWidgetContents->layout()->addWidget(new SensorValueView(ui->scrollAreaWidgetContents));
-
+    connect(udpSocketListener, SIGNAL(dataReceived(UdpPacket)), udpPacketParser, SLOT(parseData(UdpPacket)));
+    connect(udpPacketParser, SIGNAL(dataParsed(SensorPacket)), sensorManager, SLOT(updateDevice(SensorPacket)));
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
+    delete sensorManager;
+    delete udpSocketListener;
+    delete udpPacketParser;
     delete ui;
+}
+
+void MainWindow::on_addDeviceButton_clicked() {
+    //sensorManager->addDevice("192.168.0.102", 1026);
+    CreateDeviceDialog* deviceDialog = new CreateDeviceDialog(this);
+    connect(deviceDialog, SIGNAL(createDevice(QString)), sensorManager, SLOT(addDeviceSlot(QString)));
+    deviceDialog->exec();
+
 }
