@@ -1,4 +1,5 @@
 #include "sensordevice.h"
+#include "sensordeviceview.h"
 
 SensorDevice::SensorDevice(quint32 _address, qint32 _port) {
     address = _address;

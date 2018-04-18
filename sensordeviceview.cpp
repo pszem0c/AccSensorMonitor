@@ -8,9 +8,7 @@
 SensorDeviceView::SensorDeviceView(QWidget *parent) : QWidget(parent) {
     sensorValue = new qint16[32];
     std::fill(sensorValue, sensorValue+32, 0);
-    parentHeight = parent->geometry().height();
-    parentWidth = parent->geometry().width();
-    setFixedSize(parentWidth-40, 410);
+    setFixedSize(1600, 410);
 }
 
 SensorDeviceView::~SensorDeviceView() {
@@ -29,6 +27,20 @@ void SensorDeviceView::setPort(qint32 port) {
     devicePort = port;
 }
 
+void SensorDeviceView::setFrameWidth(qint32 w) {
+    frameWidth = w;
+    setFixedSize(frameWidth-40, 410);
+}
+
+void SensorDeviceView::setFrameHeight(qint32 h) {
+    frameHeight = h;
+}
+
+void SensorDeviceView::removeAction(bool checked) {
+    setVisible(false);
+    //emit removeDevice(this);
+}
+
 
 void SensorDeviceView::paintEvent(QPaintEvent *event) {
     // ustawienie rysowania
@@ -39,7 +51,7 @@ void SensorDeviceView::paintEvent(QPaintEvent *event) {
     painter.setPen(pen);
 
     //rysowanie obówdki
-    QRect sensorRectangle = QRect(5, 5, parentWidth-50, 400);
+    QRect sensorRectangle = QRect(5, 5, frameWidth-50, 400);
     painter.drawRect(sensorRectangle);
 
     //rysowanie nazwy
@@ -68,20 +80,19 @@ void SensorDeviceView::paintEvent(QPaintEvent *event) {
 }
 
 QSize SensorDeviceView::sizeHint() {
-    return QSize(parentWidth-40, 410);
+    return QSize(frameWidth-40, 410);
 }
 
 QSize SensorDeviceView::minimumSizeHint() {
-    return QSize(parentWidth-40, 410);
+    return QSize(frameWidth-40, 410);
 }
 
 void SensorDeviceView::contextMenuEvent(QContextMenuEvent *event) {
     QMenu contextMenu(this);
 
     QAction action("Usuń", this);
+    connect(&action, SIGNAL(triggered(bool)), this, SLOT(removeAction(bool)));
     contextMenu.addAction(&action);
     contextMenu.exec(mapToGlobal(event->pos()));
-
-    qDebug() << "context event: " << deviceAddress;
 }
 

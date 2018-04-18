@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     sensorManager = new SensorManager;
     ui->scrollArea->setWidgetResizable(true);
-    ui->scrollAreaWidgetContents->setLayout(new QVBoxLayout(ui->scrollAreaWidgetContents));
+    ui->scrollAreaWidgetContents->setLayout(new QVBoxLayout);
     ui->scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignTop);
     sensorManager->setDeviceLayout((QVBoxLayout*)ui->scrollAreaWidgetContents->layout());
 

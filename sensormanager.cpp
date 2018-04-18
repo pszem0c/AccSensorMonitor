@@ -28,17 +28,19 @@ void SensorManager::addDevice(QString address, qint32 port) {
 
 void SensorManager::addDevice(SensorDevice *sensorDevice) {
     sensorList.append(sensorDevice);
-    SensorDeviceView* sensorDeviceView = new SensorDeviceView(deviceLayout->parentWidget());
+    SensorDeviceView* sensorDeviceView = new SensorDeviceView();
+    sensorDeviceView->setFrameWidth(deviceLayout->parentWidget()->size().width());
+    connect(sensorDeviceView, SIGNAL(removeDevice(SensorDeviceView*)), this, SLOT(removeDevice(SensorDeviceView*)));
     sensorDevice->setView(sensorDeviceView);
     sensorDeviceView->setAddress(QHostAddress(sensorDevice->getAddress()).toString());
     sensorDeviceView->setPort(sensorDevice->getPort());
     deviceLayout->addWidget(sensorDeviceView);
-    //deviceLayout->addItem(new QSpacerItem(100,20, QSizePolicy::Minimum, QSizePolicy::Expanding));
+
 }
 
 void SensorManager::updateDevice(SensorPacket packet) {
     for(QList<SensorDevice*>::iterator it = sensorList.begin(); it != sensorList.end(); it++) {
-        if(((*it)->getAddress() == packet.senderAddress)) {
+        if((*it)->getAddress() == packet.senderAddress) {
             (*it)->setSensorValue(packet.sensor);
             (*it)->getView()->setSensorValue(packet.sensor);
             (*it)->getView()->repaint();
@@ -49,4 +51,12 @@ void SensorManager::updateDevice(SensorPacket packet) {
 
 void SensorManager::addDeviceSlot(QString address) {
     addDevice(address, 1026);
+}
+
+void SensorManager::removeDevice(SensorDeviceView *sensorDeviceView) {
+    for(QList<SensorDevice*>::iterator it = sensorList.begin(); it != sensorList.end(); it++) {
+        if((*it)->getView() == sensorDeviceView) {
+
+        }
+    }
 }
