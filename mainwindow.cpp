@@ -23,10 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
     windowWidth = this->size().width();
 
     sensorManager = new SensorManager;
-    ui->scrollArea->setWidgetResizable(true);
-    ui->scrollAreaWidgetContents->setLayout(new QVBoxLayout);
-    ui->scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignTop);
-    sensorManager->setDeviceLayout((QVBoxLayout*)ui->scrollAreaWidgetContents->layout());
+    ui->deviceLayout->setAlignment(Qt::AlignLeft);
+    sensorManager->setDeviceLayout(ui->deviceLayout);
 
     udpSocketListener = new UdpSocketListener;
     udpPacketParser = new UdpPacketParser;
@@ -45,7 +43,7 @@ MainWindow::~MainWindow() {
 void MainWindow::on_addDeviceButton_clicked() {
     //sensorManager->addDevice("192.168.0.102", 1026);
     CreateDeviceDialog* deviceDialog = new CreateDeviceDialog(this);
-    connect(deviceDialog, SIGNAL(createDevice(QString)), sensorManager, SLOT(addDeviceSlot(QString)));
+    connect(deviceDialog, SIGNAL(createDevice(QString,quint8*)), sensorManager, SLOT(addDeviceSlot(QString,quint8*)));
     deviceDialog->exec();
 
 }

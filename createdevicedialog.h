@@ -19,7 +19,7 @@ private slots:
     void on_createButton_clicked();
 
 signals:
-    void createDevice(QString);
+    void createDevice(QString, quint8*);
 
 private:
     Ui::CreateDeviceDialog *ui;

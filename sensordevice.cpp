@@ -4,8 +4,8 @@
 SensorDevice::SensorDevice(quint32 _address, qint32 _port) {
     address = _address;
     port = _port;
-    sensorValue = new qint16[32];
-
+    sensorValue = new qint16[4];
+    sensorTransform = new quint8[4];
 }
 
 SensorDevice::~SensorDevice() {
@@ -14,7 +14,13 @@ SensorDevice::~SensorDevice() {
 }
 
 void SensorDevice::setSensorValue(qint16 *_sensorValue) {
-    std::copy(_sensorValue, _sensorValue+32, sensorValue);
+    for (int i = 0; i < 4; i++) {
+        sensorValue[i] = _sensorValue[sensorTransform[i]];
+    }
+}
+
+void SensorDevice::setSensorTransform(quint8 *transform) {
+    std::copy(transform, transform+4, sensorTransform);
 }
 
 void SensorDevice::setView(SensorDeviceView *view) {

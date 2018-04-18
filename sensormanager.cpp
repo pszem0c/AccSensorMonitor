@@ -16,20 +16,21 @@ SensorManager::~SensorManager() {
     sensorList.clear();
 }
 
-void SensorManager::setDeviceLayout(QVBoxLayout *layout) {
+void SensorManager::setDeviceLayout(QHBoxLayout *layout) {
     deviceLayout = layout;
 }
 
-void SensorManager::addDevice(QString address, qint32 port) {
+void SensorManager::addDevice(QString address, qint32 port, quint8* transform) {
     quint32 ipAddress = QHostAddress(address).toIPv4Address();
     SensorDevice* sensorDevice = new SensorDevice(ipAddress, port);
+    sensorDevice->setSensorTransform(transform);
+    delete transform;
     addDevice(sensorDevice);
 }
 
 void SensorManager::addDevice(SensorDevice *sensorDevice) {
     sensorList.append(sensorDevice);
     SensorDeviceView* sensorDeviceView = new SensorDeviceView();
-    sensorDeviceView->setFrameWidth(deviceLayout->parentWidget()->size().width());
     connect(sensorDeviceView, SIGNAL(removeDevice(SensorDeviceView*)), this, SLOT(removeDevice(SensorDeviceView*)));
     sensorDevice->setView(sensorDeviceView);
     sensorDeviceView->setAddress(QHostAddress(sensorDevice->getAddress()).toString());
@@ -40,17 +41,16 @@ void SensorManager::addDevice(SensorDevice *sensorDevice) {
 
 void SensorManager::updateDevice(SensorPacket packet) {
     for(QList<SensorDevice*>::iterator it = sensorList.begin(); it != sensorList.end(); it++) {
-        if(((*it)->getAddress() == packet.senderAddress) && (*it)->getView()->isVisible()) {
+        if(((*it)->getAddress() == packet.senderAddress)) {
             (*it)->setSensorValue(packet.sensor);
-            (*it)->getView()->setSensorValue(packet.sensor);
+            (*it)->getView()->setSensorValue((*it)->getSensorValue());
             (*it)->getView()->repaint();
-            break;
         }
     }
 }
 
-void SensorManager::addDeviceSlot(QString address) {
-    addDevice(address, 1026);
+void SensorManager::addDeviceSlot(QString address, quint8 *transform) {
+    addDevice(address, 1026, transform);
 }
 
 void SensorManager::removeDevice(SensorDeviceView *sensorDeviceView) {

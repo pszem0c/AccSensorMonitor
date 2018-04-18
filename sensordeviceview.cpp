@@ -6,9 +6,9 @@
 #include <QContextMenuEvent>
 
 SensorDeviceView::SensorDeviceView(QWidget *parent) : QWidget(parent) {
-    sensorValue = new qint16[32];
-    std::fill(sensorValue, sensorValue+32, 0);
-    setFixedSize(1600, 410);
+    sensorValue = new qint16[4];
+    std::fill(sensorValue, sensorValue+4, 0);
+    setFixedSize(120, 530);
 }
 
 SensorDeviceView::~SensorDeviceView() {
@@ -16,7 +16,7 @@ SensorDeviceView::~SensorDeviceView() {
 }
 
 void SensorDeviceView::setSensorValue(qint16 *val) {
-    std::copy(val, val+32, sensorValue);
+    std::copy(val, val+4, sensorValue);
 }
 
 void SensorDeviceView::setAddress(QString address) {
@@ -27,17 +27,8 @@ void SensorDeviceView::setPort(qint32 port) {
     devicePort = port;
 }
 
-void SensorDeviceView::setFrameWidth(qint32 w) {
-    frameWidth = w;
-    setFixedSize(frameWidth-40, 410);
-}
-
-void SensorDeviceView::setFrameHeight(qint32 h) {
-    frameHeight = h;
-}
-
 void SensorDeviceView::removeAction(bool checked) {
-    setVisible(false);
+    //setVisible(false);
     //emit removeDevice(this);
 }
 
@@ -46,16 +37,19 @@ void SensorDeviceView::paintEvent(QPaintEvent *event) {
     // ustawienie rysowania
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    QPen pen = QPen(Qt::black);
+    QPen pen = QPen(Qt::gray);
     pen.setWidth(3);
     painter.setPen(pen);
 
     //rysowanie obówdki
-    QRect sensorRectangle = QRect(5, 5, frameWidth-50, 400);
+    QRect sensorRectangle = QRect(5, 5, 110, 520);
     painter.drawRect(sensorRectangle);
 
+    pen.setColor(Qt::black);
+    painter.setPen(pen);
+
     //rysowanie nazwy
-    QString deviceName = QString(deviceAddress + ":" + QString::number(devicePort));
+    QString deviceName = QString(deviceAddress);
     painter.drawText(10, 20, deviceName);
 
 
@@ -64,27 +58,22 @@ void SensorDeviceView::paintEvent(QPaintEvent *event) {
     x = 10;
     y = 30;
     for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 8; ++j) {
-            qint32 val = (((float)sensorValue[(i*8)+j]-(std::numeric_limits<qint16>::min()))/(std::numeric_limits<qint16>::max()-(std::numeric_limits<qint16>::min())))*255;
-            //QBrush brush = QBrush(QColor(sensorValue[(i*8)+j], sensorValue[(i*8)+j], sensorValue[(i*8)+j]));
-            QBrush brush = QBrush(QColor(val, val, val));
-            painter.drawText(x,y+70, QString::number(sensorValue[i*8+j]));
-            QRect  valueRectangle = QRect(x, y, 50, 50);
-            painter.drawRect(valueRectangle);
-            painter.fillRect(valueRectangle, brush);
-            x+=60;
-        }
-        y+= 80;
-        x=10;
+        qint32 val = (((float)sensorValue[i]-(std::numeric_limits<qint16>::min()))/(std::numeric_limits<qint16>::max()-(std::numeric_limits<qint16>::min())))*255;
+        QBrush brush = QBrush(QColor(val, val, val));
+        painter.drawText(x,y+115, QString::number(sensorValue[i]));
+        QRect  valueRectangle = QRect(x, y, 100, 100);
+        painter.drawRect(valueRectangle);
+        painter.fillRect(valueRectangle, brush);
+        y+=120;
     }
 }
 
 QSize SensorDeviceView::sizeHint() {
-    return QSize(frameWidth-40, 410);
+    return QSize(120, 500);
 }
 
 QSize SensorDeviceView::minimumSizeHint() {
-    return QSize(frameWidth-40, 410);
+    return QSize(120, 500);
 }
 
 void SensorDeviceView::contextMenuEvent(QContextMenuEvent *event) {
