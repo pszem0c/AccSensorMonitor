@@ -8,7 +8,7 @@ class SensorDeviceView;
 class SensorDevice {
 private:
     qint16*     sensorValue;
-    quint8*      sensorTransform;
+    quint8*     sensorTransform;
     quint32     address;
     qint32      port;
     SensorDeviceView* sensorDeviceView;
@@ -21,6 +21,7 @@ public:
     void setSensorTransform(quint8* transform);
     void setView(SensorDeviceView* view);
     SensorDeviceView* getView();
+    quint8* getSensorTransform();
     qint16* getSensorValue();
     quint32 getAddress();
     qint32  getPort();

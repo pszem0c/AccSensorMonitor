@@ -23,7 +23,8 @@ public:
     void setDeviceLayout(QHBoxLayout* layout);
     void addDevice(QString address, qint32 port, quint8* transform);
     void addDevice(SensorDevice* sensorDevice);
-
+    void addDevices(QList<SensorDevice*> list);
+    QList<SensorDevice*> getSensorList();
 
 signals:
 

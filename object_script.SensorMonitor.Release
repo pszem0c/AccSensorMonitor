@@ -1,0 +1,17 @@
+INPUT(
+./release/main.o
+./release/mainwindow.o
+./release/sensormanager.o
+./release/sensordevice.o
+./release/sensordeviceview.o
+./release/udppacketparser.o
+./release/udpsocketlistener.o
+./release/createdevicedialog.o
+./release/sensorconfigurationmanager.o
+./release/moc_mainwindow.o
+./release/moc_sensormanager.o
+./release/moc_sensordeviceview.o
+./release/moc_udppacketparser.o
+./release/moc_udpsocketlistener.o
+./release/moc_createdevicedialog.o
+);

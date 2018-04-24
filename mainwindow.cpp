@@ -7,12 +7,14 @@
 #include <QPushButton>
 #include <QString>
 #include <QDebug>
+#include <QFileDialog>
+#include <QList>
 
 #include "sensormanager.h"
 #include "udpsocketlistener.h"
 #include "udppacketparser.h"
 #include "createdevicedialog.h"
-
+#include "sensorconfigurationmanager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -46,4 +48,14 @@ void MainWindow::on_addDeviceButton_clicked() {
     connect(deviceDialog, SIGNAL(createDevice(QString,quint8*)), sensorManager, SLOT(addDeviceSlot(QString,quint8*)));
     deviceDialog->exec();
 
+}
+
+void MainWindow::on_saveConfigurationButton_clicked() {
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Zapisz konfigurację"));
+    SensorConfigurationManager::saveConfiguration(fileName, sensorManager->getSensorList());
+}
+
+void MainWindow::on_loadConfigurationButton_clicked() {
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Wczytaj konfigurację"));
+    sensorManager->addDevices(SensorConfigurationManager::loadConfiguration(fileName));
 }

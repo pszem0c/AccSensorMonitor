@@ -30,9 +30,9 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>50</y>
+      <y>44</y>
       <width>151</width>
-      <height>25</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -49,6 +49,32 @@
      </rect>
     </property>
     <layout class="QHBoxLayout" name="deviceLayout"/>
+   </widget>
+   <widget class="QPushButton" name="saveConfigurationButton">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>90</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Zapisz konfigurację</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="loadConfigurationButton">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>140</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Wczytaj konfigurację</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

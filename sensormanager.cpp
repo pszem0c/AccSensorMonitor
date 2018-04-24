@@ -39,6 +39,16 @@ void SensorManager::addDevice(SensorDevice *sensorDevice) {
 
 }
 
+void SensorManager::addDevices(QList<SensorDevice *> list) {
+    for (QList<SensorDevice*>::iterator it = list.begin(); it != list.end(); it++) {
+        addDevice(*it);
+    }
+}
+
+QList<SensorDevice *> SensorManager::getSensorList() {
+    return sensorList;
+}
+
 void SensorManager::updateDevice(SensorPacket packet) {
     for(QList<SensorDevice*>::iterator it = sensorList.begin(); it != sensorList.end(); it++) {
         if(((*it)->getAddress() == packet.senderAddress)) {
@@ -54,9 +64,5 @@ void SensorManager::addDeviceSlot(QString address, quint8 *transform) {
 }
 
 void SensorManager::removeDevice(SensorDeviceView *sensorDeviceView) {
-    for(QList<SensorDevice*>::iterator it = sensorList.begin(); it != sensorList.end(); it++) {
-        if((*it)->getView() == sensorDeviceView) {
-            (*it)->getView()->setVisible(false);
-        }
-    }
+
 }

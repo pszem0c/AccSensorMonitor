@@ -22,6 +22,10 @@ public:
 private slots:
     void on_addDeviceButton_clicked();
 
+    void on_saveConfigurationButton_clicked();
+
+    void on_loadConfigurationButton_clicked();
+
 private:
     Ui::MainWindow*     ui;
     SensorManager* sensorManager;

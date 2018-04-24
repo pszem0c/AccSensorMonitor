@@ -28,8 +28,7 @@ void SensorDeviceView::setPort(qint32 port) {
 }
 
 void SensorDeviceView::removeAction(bool checked) {
-    //setVisible(false);
-    //emit removeDevice(this);
+    emit removeDevice(this);
 }
 
 

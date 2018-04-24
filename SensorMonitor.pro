@@ -31,7 +31,9 @@ SOURCES += \
     sensordeviceview.cpp \
     udppacketparser.cpp \
     udpsocketlistener.cpp \
-    createdevicedialog.cpp
+    createdevicedialog.cpp \
+    sensorconfigurationmanager.cpp \
+    sensorlogger.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,7 +44,9 @@ HEADERS += \
     udppacket.h \
     udppacketparser.h \
     udpsocketlistener.h \
-    createdevicedialog.h
+    createdevicedialog.h \
+    sensorconfigurationmanager.h \
+    sensorlogger.h
 
 FORMS += \
         mainwindow.ui \

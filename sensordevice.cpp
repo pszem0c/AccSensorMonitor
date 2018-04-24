@@ -31,6 +31,10 @@ SensorDeviceView *SensorDevice::getView() {
     return sensorDeviceView;
 }
 
+quint8 *SensorDevice::getSensorTransform() {
+    return sensorTransform;
+}
+
 qint16 *SensorDevice::getSensorValue() {
     return sensorValue;
 }
