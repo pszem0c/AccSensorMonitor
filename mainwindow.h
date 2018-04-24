@@ -6,6 +6,7 @@
 class SensorManager;
 class UdpSocketListener;
 class UdpPacketParser;
+class SensorLogger;
 
 namespace Ui {
 class MainWindow;
@@ -21,14 +22,13 @@ public:
 
 private slots:
     void on_addDeviceButton_clicked();
-
     void on_saveConfigurationButton_clicked();
-
     void on_loadConfigurationButton_clicked();
 
 private:
     Ui::MainWindow*     ui;
     SensorManager* sensorManager;
+    SensorLogger* sensorLogger;
     UdpSocketListener* udpSocketListener;
     UdpPacketParser* udpPacketParser;
     qint64 windowHeight;

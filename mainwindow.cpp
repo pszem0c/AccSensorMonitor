@@ -9,12 +9,14 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QList>
+#include <QDateTime>
 
 #include "sensormanager.h"
 #include "udpsocketlistener.h"
 #include "udppacketparser.h"
 #include "createdevicedialog.h"
 #include "sensorconfigurationmanager.h"
+#include "sensorlogger.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,11 +30,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->deviceLayout->setAlignment(Qt::AlignLeft);
     sensorManager->setDeviceLayout(ui->deviceLayout);
 
+    sensorLogger = new SensorLogger;
+    sensorLogger->openLog(QDateTime::currentDateTime().toString("ddMMyy-HHMM") + ".log");
+
     udpSocketListener = new UdpSocketListener;
     udpPacketParser = new UdpPacketParser;
 
+
+
     connect(udpSocketListener, SIGNAL(dataReceived(UdpPacket)), udpPacketParser, SLOT(parseData(UdpPacket)));
     connect(udpPacketParser, SIGNAL(dataParsed(SensorPacket)), sensorManager, SLOT(updateDevice(SensorPacket)));
+    connect(sensorManager, SIGNAL(deviceUpdated(QList<SensorDevice*>)), sensorLogger, SLOT(writeToLogSlot(QList<SensorDevice*>)));
 }
 
 MainWindow::~MainWindow() {

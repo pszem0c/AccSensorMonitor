@@ -57,6 +57,7 @@ void SensorManager::updateDevice(SensorPacket packet) {
             (*it)->getView()->repaint();
         }
     }
+    emit deviceUpdated(sensorList);
 }
 
 void SensorManager::addDeviceSlot(QString address, quint8 *transform) {

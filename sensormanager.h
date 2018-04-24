@@ -27,6 +27,7 @@ public:
     QList<SensorDevice*> getSensorList();
 
 signals:
+    void deviceUpdated(QList<SensorDevice*> list);
 
 public slots:
     void updateDevice(SensorPacket packet);
